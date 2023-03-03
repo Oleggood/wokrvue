@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatusController;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,10 +31,27 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //свои роуты - начало
+    //роуты для нопика:
+    Route::middleware('nopic')->group(function () {
+
+
+    });
+
+    //роуты для админа
+    Route::middleware('admin')->prefix('admin')->group(function () {
+        //Статусы задач:
+        Route::resource('status', StatusController::class);
+
+
+    });
+    //свои роуты - конец
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

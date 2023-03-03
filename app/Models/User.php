@@ -18,9 +18,18 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'surname',
         'name',
+        'patronymic',
+        'birthday',
+        'nickname',
         'email',
         'password',
+        'login',
+        'note',
+        'department_id',
+        'position_id',
+        'role_id',
     ];
 
     /**
@@ -41,4 +50,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id')->withDefault([
+            'role' => '!!!не определена либо удалена',
+        ]);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id')->withDefault([
+            'department' => '!!!не определен либо удален',
+        ]);
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id')->withDefault([
+            'position' => '!!!не определена либо удалена',
+        ]);
+    }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'task_users', 'user_id', 'task_id');
+    }
+
 }
