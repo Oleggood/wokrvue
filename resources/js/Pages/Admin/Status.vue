@@ -7,7 +7,7 @@
         <!--preloader-->
         <div v-if="isLoading" class="inset-0 fixed flex">
             <div class="m-auto text-red-700 text-xl">
-                !!!!!!!!!!!!!!!Идет загрузка...!!!!!!!!!!!!!!
+                <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600"/><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600" transform="rotate(120 64 64)"/><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600" transform="rotate(240 64 64)"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="120 64 64" dur="720ms" repeatCount="indefinite"></animateTransform></g></svg>
             </div>
         </div>
         <!--/preloader-->
@@ -70,7 +70,7 @@
                     id="new_status"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="form.newNewStatus"
+                    v-model="forma.newNewStatus"
                 />
                 <div class="mt-6">
                     <primary-button>
@@ -132,9 +132,9 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Modal from "@/Components/Modal.vue";
 import MyModal from "@/Components/MyModal.vue";
-import {useForm} from "@inertiajs/vue3";
+// import {useForm} from "@inertiajs/vue3";
 import {reactive} from "vue";
-import {Inertia} from "@inertiajs/inertia";
+// import {Inertia} from "@inertiajs/inertia";
 
 export default {
     name: 'Status',
@@ -151,21 +151,12 @@ export default {
         TextInput,
     },
 
-    setup () {
-        const form = reactive({
+    setup() {
+        const forma = reactive({
             newNewStatus: null,
         })
 
-        function submit() {
-           this.form.post('/admin/status', {
-               status: this.form.newNewStatus,
-               onFinish: () => {
-                   console.log(2222);
-               }
-           });
-
-        }
-        return { form, submit }
+        // return { form, submit }
     },
 
     data() {
@@ -176,7 +167,8 @@ export default {
             deleteDialogVisible: false,
             isLoading: false,
 
-            form: this.$inertia.form({newStatus: ''}),
+            // newNewStatus: null,
+            forma: this.$inertia.form({}),
         }
     },
     props: [
@@ -194,6 +186,18 @@ export default {
             });
             this.isLoading = false;
             this.newStatus = '';
+        },
+
+        submit() {
+            this.forma['status'] = this.forma.newNewStatus;
+            this.isLoading = true;
+            this.forma.post('/admin/status', {
+                onFinish: () => {
+                    console.log(this.forma['status']);
+                    this.isLoading = false;
+                    this.forma.newNewStatus = '';
+                }
+            });
         },
 
         createOne() {
