@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Position extends Model
 {
-    use HasFactory;
+//    use HasFactory;
 //    use SoftDeletes;
     protected $fillable = array('position', 'is_director', 'is_deputy_director');
+    protected $table = 'positions';
+
 }

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Status extends Model
 {
-    use HasFactory;
+//    use HasFactory;
     //use SoftDeletes;
     protected $fillable = array('status');
+    protected $table = 'statuses';
 }

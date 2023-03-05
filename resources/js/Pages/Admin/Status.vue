@@ -25,10 +25,10 @@
                     <td class="border border-slate-700 text-center">{{ stat.id }}</td>
                     <td class="border border-slate-700 text-center">{{ stat.status }}</td>
                     <td class="border border-slate-700 text-center py-2">
-                        <secondary-button @click="showUpdateDialog(stat)" class="mr-2">
+                        <secondary-button @click.prevent="showUpdateDialog(stat)" class="mr-2">
                             изменить
                         </secondary-button>
-                        <danger-button @click="showDeleteDialog(stat)" class="ml-2">
+                        <danger-button @click.prevent="showDeleteDialog(stat)" class="ml-2">
                             удалить
                         </danger-button>
                     </td>
@@ -134,6 +134,7 @@ import Modal from "@/Components/Modal.vue";
 import MyModal from "@/Components/MyModal.vue";
 // import {useForm} from "@inertiajs/vue3";
 import {reactive} from "vue";
+import {v} from "../../../../public/build/assets/app-1eeaa0e3";
 // import {Inertia} from "@inertiajs/inertia";
 
 export default {
@@ -184,6 +185,7 @@ export default {
                     console.log(11111);
                 }
             });
+
             this.isLoading = false;
             this.newStatus = '';
         },

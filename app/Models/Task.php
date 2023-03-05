@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    use HasFactory;
+//    use HasFactory;
     //use SoftDeletes;
     protected $fillable = array('task_date', 'number', 'task_name', 'item', 'task', 'note', 'deadline', 'task_status_id');
+    protected $table = 'tasks';
     public function status()
     {
         return $this->belongsTo(Status::class, 'task_status_id')->withDefault([

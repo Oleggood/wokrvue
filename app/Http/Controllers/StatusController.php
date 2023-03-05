@@ -22,7 +22,7 @@ class StatusController extends Controller
     }
 
     public function store (StoreRequest $request) {
-        Status::create($request->validated());
+        Status::firstOrCreate($request->validated());
     }
 
     public function update(UpdateRequest $request, Status $status)

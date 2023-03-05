@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Department extends Model
 {
-    use HasFactory;
+//    use HasFactory;
 //    use SoftDeletes;
+    protected $table = 'departments';
     protected $fillable = array('department', 'note');
 }

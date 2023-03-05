@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Executor extends Model
 {
-    use HasFactory;
+//    use HasFactory;
+    protected $guarded = false;
 }
