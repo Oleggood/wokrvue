@@ -4,22 +4,7 @@
             <h3 class="text-lg font-semibold">Статусы задач</h3>
         </div>
 
-        <!--preloader-->
-        <div v-if="isLoading" class="inset-0 fixed flex">
-            <div class="m-auto text-red-700 text-xl">
-                <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
-                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px"
-                     viewBox="0 0 128 128" xml:space="preserve"><g><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600"/><path
-                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
-                    fill="#ff8600" transform="rotate(120 64 64)"/><path
-                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
-                    fill="#ff8600" transform="rotate(240 64 64)"/><animateTransform attributeName="transform"
-                                                                                    type="rotate" from="0 64 64"
-                                                                                    to="120 64 64" dur="720ms"
-                                                                                    repeatCount="indefinite"></animateTransform></g></svg>
-            </div>
-        </div>
-        <!--/preloader-->
+
 
         <!--index-->
         <div v-if="statuses.length > 0" class="mt-6">
@@ -56,7 +41,7 @@
                     id="new_status"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="formLocal.status"
+                    v-model="formLocalCreate.status"
                 />
                 <div class="mt-6">
                     <primary-button>
@@ -70,22 +55,24 @@
         <!--update Modal-->
         <my-modal v-model:show="updateDialogVisible">
             <div class="md:ml-16 sm:ml-4 min-w-[80%]">
-                <div class="flex flex-col mt-6">
-                    <InputLabel for="current_status" value="Изменить статус:"/>
-                    <TextInput
-                        id="current_status"
-                        type="text"
-                        class="mt-1 block w-full"
-                        autofocus
-                        v-model="currentStatus"
-                    />
-                    <div class="flex justify-around mt-6">
-                        <primary-button type="submit" @click="update(currentStatus, id)">
-                            сохранить
-                        </primary-button>
-                        <secondary-button @click="hiddenUpdateDialog">отмена</secondary-button>
+                <form @submit.prevent="update(stat, id)" class="flex flex-col mt-6">
+                    <div >
+                        <InputLabel for="current_status" value="Изменить статус:"/>
+                        <TextInput
+                            id="current_status"
+                            type="text"
+                            class="mt-1 block w-full"
+                            autofocus
+                            v-model="stat.status"
+                        />
+                        <div class="flex justify-around mt-6">
+                            <primary-button type="submit">
+                                сохранить
+                            </primary-button>
+                            <secondary-button @click="hiddenUpdateDialog">отмена</secondary-button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </my-modal>
         <!--/update Modal-->
@@ -102,6 +89,23 @@
             </div>
         </my-modal>
         <!--/delete Modal-->
+
+        <!--preloader-->
+        <div v-if="isLoading" class="inset-0 fixed flex">
+            <div class="m-auto text-red-700 text-xl">
+                <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px"
+                     viewBox="0 0 128 128" xml:space="preserve"><g><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600"/><path
+                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
+                    fill="#ff8600" transform="rotate(120 64 64)"/><path
+                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
+                    fill="#ff8600" transform="rotate(240 64 64)"/><animateTransform attributeName="transform"
+                                                                                    type="rotate" from="0 64 64"
+                                                                                    to="120 64 64" dur="720ms"
+                                                                                    repeatCount="indefinite"></animateTransform></g></svg>
+            </div>
+        </div>
+        <!--/preloader-->
 
     </admin-main>
 </template>
@@ -136,12 +140,19 @@ export default {
 
     data() {
         return {
-            currentStatus: '',
             updateDialogVisible: false,
             deleteDialogVisible: false,
             isLoading: false,
             form: this.$inertia.form({}),
-            formLocal: {'id': '', 'status': ''},
+            formLocalCreate: {'id': '', 'status': ''},
+
+            formLocalUpdate: {
+                'id': '',
+                'status': '',
+                'created_at': '',
+                'updated_at': '',
+                'deleted_at': ''
+            },
         }
     },
 
@@ -152,11 +163,11 @@ export default {
     methods: {
         store() {
             this.isLoading = true;
-            this.form = this.$inertia.form(this.formLocal);
+            this.form = this.$inertia.form(this.formLocalCreate);
             this.form.post('/admin/status', {
                 onFinish: () => {
                     this.isLoading = false;
-                    this.formLocal = '';
+                    this.formLocalCreate = '';
                 }
             });
         },
@@ -164,7 +175,6 @@ export default {
         showUpdateDialog(stat) {
             this.updateDialogVisible = true;
             this.stat = stat;
-            this.currentStatus = stat.status;
             this.id = stat.id;
         },
 
@@ -172,11 +182,17 @@ export default {
             this.updateDialogVisible = false;
         },
 
-        update(currentStatus, id) {
+        update(stat, id) {
             this.isLoading = true;
-            this.$inertia.patch(`/admin/status/${id}`, {status: this.currentStatus}); //!!!!КАВЫЧКИ - на Ё!!!!
-            this.updateDialogVisible = false;
-            this.isLoading = false;
+            this.form = this.$inertia.form(this.stat);
+            this.form.patch(`/admin/status/${id}`, {
+                onFinish: () => {
+                    this.updateDialogVisible = false;
+                    this.isLoading = false;
+                }
+            });
+
+
         },
 
         showDeleteDialog(stat) {
