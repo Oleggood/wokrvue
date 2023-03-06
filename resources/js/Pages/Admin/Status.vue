@@ -35,7 +35,7 @@
 
         <!--create-->
         <div class="max-w-[40%]">
-            <form class="flex flex-col mt-6" @submit.prevent="store">
+            <form class="flex flex-col mt-6" @submit="store">
                 <InputLabel for="new_status" value="Добавить новый статус:"/>
                 <TextInput
                     id="new_status"
@@ -84,7 +84,7 @@
                 <div class="flex justify-around mb-4">
                     <text-input autofocus class="w-0"></text-input> <!--нужен для закрытия модалки при нажатии ESC-->
                     <secondary-button autofocus @click="hiddenDeleteDialog">отмена</secondary-button>
-                    <danger-button @click="del(stat.id)">удалить</danger-button>
+                    <danger-button @click="del(stat)">удалить</danger-button>
                 </div>
             </div>
         </my-modal>
@@ -145,14 +145,6 @@ export default {
             isLoading: false,
             form: this.$inertia.form({}),
             formLocalCreate: {'id': '', 'status': ''},
-
-            formLocalUpdate: {
-                'id': '',
-                'status': '',
-                'created_at': '',
-                'updated_at': '',
-                'deleted_at': ''
-            },
         }
     },
 
@@ -204,11 +196,15 @@ export default {
             this.deleteDialogVisible = false;
         },
 
-        del(id) {
+        del(stat) {
             this.isLoading = true;
-            this.$inertia.delete(`/admin/status/${id}`);  //!!!!КАВЫЧКИ - на Ё!!!!
-            this.deleteDialogVisible = false;
-            this.isLoading = false;
+            this.form = this.$inertia.form(this.stat);
+            this.form.delete(`/admin/status/${stat.id}`, {
+                onFinish: () => {
+                    this.deleteDialogVisible = false;
+                    this.isLoading = false;
+                }
+            });
         },
     }
 }
