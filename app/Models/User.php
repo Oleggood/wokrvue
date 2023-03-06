@@ -32,7 +32,7 @@ class User extends Authenticatable
         'role_id',
     ];
 
-    protected $table = 'users';
+//    protected $table = 'users';
 
     /**
      * The attributes that should be hidden for serialization.

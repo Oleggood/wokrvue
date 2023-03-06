@@ -7,7 +7,16 @@
         <!--preloader-->
         <div v-if="isLoading" class="inset-0 fixed flex">
             <div class="m-auto text-red-700 text-xl">
-                <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px" viewBox="0 0 128 128" xml:space="preserve"><g><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600"/><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600" transform="rotate(120 64 64)"/><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600" transform="rotate(240 64 64)"/><animateTransform attributeName="transform" type="rotate" from="0 64 64" to="120 64 64" dur="720ms" repeatCount="indefinite"></animateTransform></g></svg>
+                <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" version="1.0" width="64px" height="64px"
+                     viewBox="0 0 128 128" xml:space="preserve"><g><path d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z" fill="#ff8600"/><path
+                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
+                    fill="#ff8600" transform="rotate(120 64 64)"/><path
+                    d="M82.4 32.2a37.52 37.52 0 0 0-55 25.13L16.97 42.97.92 52.44A64.42 64.42 0 0 1 101.07 12.2l-.26 17.93z"
+                    fill="#ff8600" transform="rotate(240 64 64)"/><animateTransform attributeName="transform"
+                                                                                    type="rotate" from="0 64 64"
+                                                                                    to="120 64 64" dur="720ms"
+                                                                                    repeatCount="indefinite"></animateTransform></g></svg>
             </div>
         </div>
         <!--/preloader-->
@@ -39,18 +48,15 @@
         <h3 v-else class="mt-6 text-gray-900">Здесь пока пусто, добавьте запись...</h3>
         <!--/index-->
 
-        <!--cerate-->
+        <!--create-->
         <div class="max-w-[40%]">
-            <form
-                @submit.prevent="store"
-                class="flex flex-col mt-6"
-            >
+            <form class="flex flex-col mt-6" @submit.prevent="store">
                 <InputLabel for="new_status" value="Добавить новый статус:"/>
                 <TextInput
                     id="new_status"
                     type="text"
                     class="mt-1 block w-full"
-                    v-model="newStatus"
+                    v-model="formLocal.status"
                 />
                 <div class="mt-6">
                     <primary-button>
@@ -59,28 +65,7 @@
                 </div>
             </form>
         </div>
-        <!--/cerate-->
-
-
-        <!--cerate new-->
-        <div class="max-w-[40%]">
-            <form class="flex flex-col mt-6" @submit.prevent="submit">
-                <InputLabel for="new_status" value="Добавить новый статус:"/>
-                <TextInput
-                    id="new_status"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="forma.newNewStatus"
-                />
-                <div class="mt-6">
-                    <primary-button>
-                        Добавить статус
-                    </primary-button>
-                </div>
-            </form>
-        </div>
-        <!--/cerate new-->
-
+        <!--/create-->
 
         <!--update Modal-->
         <my-modal v-model:show="updateDialogVisible">
@@ -132,10 +117,7 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import Modal from "@/Components/Modal.vue";
 import MyModal from "@/Components/MyModal.vue";
-// import {useForm} from "@inertiajs/vue3";
-import {reactive} from "vue";
-import {v} from "../../../../public/build/assets/app-1eeaa0e3";
-// import {Inertia} from "@inertiajs/inertia";
+// import {reactive} from "vue";
 
 export default {
     name: 'Status',
@@ -152,26 +134,17 @@ export default {
         TextInput,
     },
 
-    setup() {
-        const forma = reactive({
-            newNewStatus: null,
-        })
-
-        // return { form, submit }
-    },
-
     data() {
         return {
-            newStatus: '',
             currentStatus: '',
             updateDialogVisible: false,
             deleteDialogVisible: false,
             isLoading: false,
-
-            // newNewStatus: null,
-            forma: this.$inertia.form({}),
+            form: this.$inertia.form({}),
+            formLocal: {'id': '', 'status': ''},
         }
     },
+
     props: [
         'statuses',
         'status',
@@ -179,36 +152,13 @@ export default {
     methods: {
         store() {
             this.isLoading = true;
-            this.$inertia.post('/admin/status', {
-                status: this.newStatus,
+            this.form = this.$inertia.form(this.formLocal);
+            this.form.post('/admin/status', {
                 onFinish: () => {
-                    console.log(11111);
-                }
-            });
-
-            this.isLoading = false;
-            this.newStatus = '';
-        },
-
-        submit() {
-            this.forma['status'] = this.forma.newNewStatus;
-            this.isLoading = true;
-            this.forma.post('/admin/status', {
-                onFinish: () => {
-                    console.log(this.forma['status']);
                     this.isLoading = false;
-                    this.forma.newNewStatus = '';
+                    this.formLocal = '';
                 }
             });
-        },
-
-        createOne() {
-            // this.isLoading = true;
-            // this.form.post('/admin/status', {
-            //     onSuccess: () => form.reset('newNewStatus'),
-            // });
-            // this.isLoading = false;
-            // this.newStatus = '';
         },
 
         showUpdateDialog(stat) {
