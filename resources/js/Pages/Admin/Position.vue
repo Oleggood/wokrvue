@@ -230,7 +230,6 @@ export default {
             this.updateDialogVisible = false;
             this.pos.is_director ? this.pos.is_director = 1 : this.pos.is_director = 0;
             this.pos.is_deputy_director ? this.pos.is_deputy_director = 1 : this.pos.is_deputy_director = 0;
-            // location.reload();
         },
 
         update(pos, id) {
