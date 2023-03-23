@@ -223,7 +223,6 @@ export default {
             this.id = pos.id;
             this.pos.is_director === 1 ? this.pos.is_director = true : this.pos.is_director = false;
             this.pos.is_deputy_director === 1 ? this.pos.is_deputy_director = true : this.pos.is_deputy_director = false;
-
         },
 
         hiddenUpdateDialog() {

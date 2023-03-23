@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
 
     //роуты для админа
     Route::middleware('admin')->prefix('admin')->group(function () {
-        //Статусы задач:
+        //Статусы задач и роли пользователей:
         Route::resource('status', StatusController::class);
         //Подразделения:
         Route::resource('department', DepartmentController::class);

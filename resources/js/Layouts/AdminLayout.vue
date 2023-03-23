@@ -36,7 +36,7 @@ const showingNavigationDropdown = ref(false);
                                     Должности
                                 </NavLink>
                                 <NavLink :href="route('status.index')" :active="route().current('status.index')">
-                                    Статусы задач
+                                    Справочники
                                 </NavLink>
                             </div>
                         </div>
