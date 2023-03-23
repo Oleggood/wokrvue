@@ -11,11 +11,6 @@ class StatusController extends Controller
 {
     public function index()
     {
-//        $statuses = Status::all();
-//        return Inertia('Admin/Status', compact('statuses'));
-
-//        оба метода работают!
-
         return Inertia::render('Admin/Status', [
             'statuses' => Status::all(),
         ]);

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use App\Http\Middleware\RoleMiddleware;
@@ -37,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
     //свои роуты - начало
     //роуты для нопика:
     Route::middleware('nopic')->group(function () {
@@ -48,10 +51,17 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->prefix('admin')->group(function () {
         //Статусы задач:
         Route::resource('status', StatusController::class);
+        //Подразделения:
+        Route::resource('department', DepartmentController::class);
+        //Должности:
+        Route::resource('position', PositionController::class);
 
 
     });
     //свои роуты - конец
+
+
+
 });
 
 require __DIR__ . '/auth.php';

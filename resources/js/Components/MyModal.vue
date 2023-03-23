@@ -1,6 +1,6 @@
 <template>
     <div v-if="show" @click="hideDialog" @keyup.esc="hideDialog" class="dialog inset-0 fixed flex">
-        <div @click.stop class="flex bg-gray-200 rounded-md md:w-1/2 sm:w-full m-auto pt-6 pb-10">
+        <div @click.stop class="flex bg-gray-200 rounded-md md:w-1/3 sm:w-full m-auto pt-6 pb-10">
             <slot></slot>
         </div>
     </div>

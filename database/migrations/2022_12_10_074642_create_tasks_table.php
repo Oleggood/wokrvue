@@ -22,7 +22,7 @@ return new class extends Migration
             $table->longText('task'); //текст поручения
             $table->longText('note')->nullable(); //примечание
             $table->date('deadline'); //крайняя дата исполнения
-            $table->integer('task_status_id'); //связь с таблицей статусов
+            $table->integer('task_status_id')->default(1); //связь с таблицей статусов
             $table->timestamps();
             $table->softDeletes();
         });

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('department', 40); //структурное подразделение
-            $table->longText('note', 500)->nullable(); //примечание
+            $table->longText('note')->nullable(); //примечание
             $table->timestamps();
             $table->softDeletes();
         });
