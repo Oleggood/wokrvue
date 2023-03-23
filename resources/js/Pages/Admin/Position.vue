@@ -1,13 +1,13 @@
 <template>
     <admin-main>
-        <div class="max-w-[60%] flex justify-center">
+        <div class="flex justify-center">
             <h3 class="text-lg font-semibold">Должности</h3>
         </div>
 
 
         <!--index-->
         <div v-if="positions.length > 0" class="mt-6">
-            <table class="border-collapse border border-slate-500 min-w-[60%]">
+            <table class="border-collapse border border-slate-500 w-full">
                 <thead class="bg-gray-200">
                 <th class="border border-slate-600 py-3">ID</th>
                 <th class="border border-slate-600 py-3">Должность</th>
@@ -18,9 +18,9 @@
                 <tbody>
                 <tr v-for="pos in positions" :key="pos.id">
                     <td class="border border-slate-700 text-center">{{ pos.id }}</td>
-                    <td class="border border-slate-700 text-center text-justify indent-4">{{ pos.position }}</td>
-                    <td class="border border-slate-700 text-center text-justify indent-4">{{ pos.is_director ? "да" : "нет" }}</td>
-                    <td class="border border-slate-700 text-center text-justify indent-4">{{ pos.is_deputy_director ? "да" : "нет" }}</td>
+                    <td class="border border-slate-700 indent-4">{{ pos.position }}</td>
+                    <td class="border border-slate-700 text-center indent-4">{{ pos.is_director ? "да" : "нет" }}</td>
+                    <td class="border border-slate-700 text-center indent-4">{{ pos.is_deputy_director ? "да" : "нет" }}</td>
 
                     <td class="border border-slate-700 text-center py-2">
                         <secondary-button @click.prevent="showUpdateDialog(pos)" class="mr-2">

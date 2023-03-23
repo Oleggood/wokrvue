@@ -1,13 +1,13 @@
 <template>
     <admin-main>
-        <div class="max-w-[60%] flex justify-center">
+        <div class="flex justify-center">
             <h3 class="text-lg font-semibold">Подразделения</h3>
         </div>
 
 
         <!--index-->
         <div v-if="departments.length > 0" class="mt-6">
-            <table class="border-collapse border border-slate-500 min-w-[60%]">
+            <table class="border-collapse border border-slate-500 w-full">
                 <thead class="bg-gray-200">
                 <th class="border border-slate-600 py-3">ID</th>
                 <th class="border border-slate-600 py-3">Подразделение</th>
@@ -17,8 +17,8 @@
                 <tbody>
                 <tr v-for="depart in departments" :key="depart.id">
                     <td class="border border-slate-700 text-center">{{ depart.id }}</td>
-                    <td class="border border-slate-700 text-center text-justify indent-4">{{ depart.department }}</td>
-                    <td class="border border-slate-700 text-center italic text-sm max-w-3xl text-justify indent-4 py-1 px-2">
+                    <td class="border border-slate-700 indent-4">{{ depart.department }}</td>
+                    <td class="border border-slate-700 italic text-sm max-w-3xl indent-4 py-1 px-2">
                         {{ depart.note }}
                     </td>
                     <td class="border border-slate-700 text-center py-2">
