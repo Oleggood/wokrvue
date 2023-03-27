@@ -109,8 +109,7 @@
                                 <span class="ml-2 text-sm text-gray-600">Заместитель руководителя</span>
                             </label>
                         </div>
-<!-- <p>{{ this.checked }}</p>-->
-<!-- <p>{{ pos.is_director ? true : '' }}</p>-->
+
                         <div class="flex justify-around mt-6">
                             <primary-button type="submit">
                                 сохранить
@@ -198,6 +197,9 @@ export default {
             form: this.$inertia.form({}),
             formLocalCreate: {'id': '', 'position': '', 'is_director': false, 'is_deputy_director': false},
             updCheck: 'checked',
+            positionTemp: '',
+            is_directorTemp: '',
+            is_deputy_directorTemp: '',
         }
     },
 
@@ -218,17 +220,26 @@ export default {
         },
 
         showUpdateDialog(pos) {
+            this.positionTemp = pos.position;
+            this.is_directorTemp = pos.is_director;
+            this.is_deputy_directorTemp = pos.is_deputy_director;
+
             this.updateDialogVisible = true;
             this.pos = pos;
             this.id = pos.id;
             this.pos.is_director === 1 ? this.pos.is_director = true : this.pos.is_director = false;
             this.pos.is_deputy_director === 1 ? this.pos.is_deputy_director = true : this.pos.is_deputy_director = false;
+            return this.positionTemp;
         },
 
-        hiddenUpdateDialog() {
+        hiddenUpdateDialog(positionTemp) {
             this.updateDialogVisible = false;
             this.pos.is_director ? this.pos.is_director = 1 : this.pos.is_director = 0;
             this.pos.is_deputy_director ? this.pos.is_deputy_director = 1 : this.pos.is_deputy_director = 0;
+
+            this.pos.position = this.positionTemp;
+            this.pos.is_director = this.is_directorTemp;
+            this.pos.is_deputy_director = this.is_deputy_directorTemp;
         },
 
         update(pos, id) {
